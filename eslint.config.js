@@ -18,7 +18,7 @@ export default [
   {
     plugins: {
       jsdoc: jsdocPlugin,
-      prettier: '@eslint/plugin-prettier',
+      prettier: ['@eslint/plugin-prettier'],
     },
     rules: {
       'indent': 'off', // Prettier is handling this
