@@ -1,5 +1,5 @@
 {
-  "name": "moj-express-skeleton",
+  "name": "govuk-frontend-express",
   "version": "0.1.0",
   "private": true,
   "main": "public/app.js",
