@@ -1,15 +1,12 @@
 import express from 'express';
-import { createRequire } from 'module';
+import morgan from 'morgan';
+import compression from 'compression';
 import { csrfProtection , setupMiddlewares, setupConfig } from '../middleware';
 import session from 'express-session';
 import {nunjucksSetup, rateLimitSetUp, helmetSetup} from '../utils';
 import config from '../config';
 import indexRouter from '../routes/index';
 import livereload from 'connect-livereload';
-
-const require = createRequire(import.meta.url);
-const logger = require('morgan');
-const compression = require('compression');
 
 const app = express();
 
@@ -102,7 +99,7 @@ setupConfig(app);
 /**
  * Sets up request logging using Morgan for better debugging and analysis.
  */
-app.use(logger('dev'));
+app.use(morgan('dev'));
 
 /**
  * Registers the main router for the application.

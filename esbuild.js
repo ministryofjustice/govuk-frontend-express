@@ -6,6 +6,7 @@ import { copy } from 'esbuild-plugin-copy';
 import fs from 'fs-extra';
 import path from 'path';
 import  { getBuildNumber } from './utils/index.js';
+import morgan from 'morgan';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -43,7 +44,16 @@ const build = async () => {
   try {
     // List of additional external dependencies
     const additionalExternals = [
-      'express', 'nunjucks', 'dotenv', 'crypto', 'cookie-signature', 'cookie-parser', 'body-parser', 'express-session'
+      'express',
+      'nunjucks',
+      'dotenv',
+      'crypto',
+      'cookie-signature',
+      'cookie-parser',
+      'body-parser',
+      'express-session',
+      'morgan',
+      'compression'
     ];
 
     // Combine core Node.js modules with additional external dependencies
