@@ -12,7 +12,7 @@ This is a template app using the GOV.UK Frontend and GOV.UK Design System which 
 The app is provided intentionally bare, with just the essential parts that all services need, such as error pages, accessibility statement and privacy notice. It uses a number of other packages to provide the [features](#features) described below with sensible and best-practice defaults. Please read the next steps section for guidance on how to start building out your app on top of this template.
 
 ## Prerequisites
-- node stable version [20.17.0]
+- node stable version [22.13.1]
 
 ## Getting started
 
@@ -24,7 +24,15 @@ Create your local config file `.env` from the template file:
 cp .env.example .env
 ```
 
-### Install and run application for development
+### Align to the Node Version specified for this project
+
+If using Node Version Manager (nvm), use the following command to switch to the correct version:
+```shell
+nvm use
+nvm install
+```
+
+### Install dependencies and run application for development
 ```shell
 npm install
 npm run build
@@ -32,7 +40,7 @@ npm run dev
 ```
 Then, load http://localhost:3000/ in your browser to access the app.
 
-### Install and run application for production
+### Install dependencies and run application for production
 ```shell
 npm install
 npm run build

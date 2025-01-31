@@ -12,7 +12,7 @@
     "dev": "nodemon --watch src --ext js,scss --exec 'node start-server.js'"
   },
   "engines": {
-    "node": "20.17.0"
+    "node": "22.13.1"
   },
   "dependencies": {
     "body-parser": "^1.20.3",
