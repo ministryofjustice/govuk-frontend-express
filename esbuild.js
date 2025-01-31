@@ -6,7 +6,6 @@ import { copy } from 'esbuild-plugin-copy';
 import fs from 'fs-extra';
 import path from 'path';
 import  { getBuildNumber } from './utils/index.js';
-import morgan from 'morgan';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -53,8 +52,10 @@ const build = async () => {
       'body-parser',
       'express-session',
       'morgan',
-      'compression'
-    ];
+      'compression',
+      'sqlite3',
+      'sqlite',
+];
 
     // Combine core Node.js modules with additional external dependencies
     const externalModules = [...builtinModules, ...additionalExternals, '*.node'];
