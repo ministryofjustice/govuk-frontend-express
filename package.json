@@ -37,7 +37,7 @@
     "@eslint/js": "^9.19.0",
     "chokidar": "3.6.0",
     "connect-livereload": "^0.6.1",
-    "esbuild": "^0.24.2",
+    "esbuild": "^0.25.0",
     "esbuild-plugin-copy": "^2.1.1",
     "esbuild-sass-plugin": "^3.3.1",
     "eslint": "^9.19.0",
