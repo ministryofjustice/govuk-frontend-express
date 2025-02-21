@@ -1,7 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import compression from 'compression';
-import { csrfProtection, setupMiddlewares, setupConfig, setupDB } from '../middleware';
+import { setupCsrf, setupMiddlewares, setupConfig, setupDB } from '../middleware';
 import session from 'express-session';
 import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware } from '../utils';
 import config from '../config';
@@ -49,7 +49,7 @@ setupDB(app).then(() => {
    * This helps in preventing certain types of attacks like XSS.
    * This is only on in production.
    */
-  app.use(csrfProtection);
+  setupCsrf(app);
 
   /**
    * Sets up security headers using Helmet to protect the app from well-known web vulnerabilities.
