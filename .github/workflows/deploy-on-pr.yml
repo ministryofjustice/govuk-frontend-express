@@ -64,7 +64,7 @@ jobs:
       repository-projects: write
       security-events: write
       statuses: write
-      	
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
