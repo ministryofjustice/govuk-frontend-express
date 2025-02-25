@@ -53,11 +53,11 @@ jobs:
       # contents: read # This is required for actions/checkout
       # actions: write
       # attestations: write
-      checks: write
+      # checks: write
       contents: write
       # deployments: write
-      issues: write
-      discussions: write
+      # issues: write
+      # discussions: write
       # packages: write
       pages: write
       pull-requests: write
