@@ -51,19 +51,19 @@ jobs:
     permissions: 
       id-token: write # This is required for requesting the JWT
       # contents: read # This is required for actions/checkout
-      actions: write
-      attestations: write
+      # actions: write
+      # attestations: write
       checks: write
       contents: write
-      deployments: write
+      # deployments: write
       issues: write
       discussions: write
-      packages: write
+      # packages: write
       pages: write
       pull-requests: write
-      repository-projects: write
-      security-events: write
-      statuses: write
+      # repository-projects: write
+      # security-events: write
+      # statuses: write
       
     steps:
       - name: Checkout code
