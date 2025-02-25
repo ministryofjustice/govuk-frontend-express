@@ -58,7 +58,10 @@ const build = async () => {
       'sqlite',
       'axios',
       'middleware-axios',
-      'util'
+      'util',
+      'path',
+      'fs',
+      'csrf-sync',
     ];
 
     // Combine core Node.js modules with additional external dependencies
