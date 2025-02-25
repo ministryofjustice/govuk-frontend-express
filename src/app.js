@@ -45,13 +45,6 @@ setupDB(app).then(() => {
   }));
 
   /**
-   * Middleware function to set up a Content Security Policy (CSP) nonce for each request.
-   * This helps in preventing certain types of attacks like XSS.
-   * This is only on in production.
-   */
-  setupCsrf(app);
-
-  /**
    * Sets up security headers using Helmet to protect the app from well-known web vulnerabilities.
    *
    * @param {import('express').Application} app - The Express application instance.
@@ -72,6 +65,13 @@ setupDB(app).then(() => {
     resave: false, // Prevents resaving unchanged sessions
     saveUninitialized: false // Only save sessions that are modified
   }));
+
+  /**
+   * Middleware function to set up a Content Security Policy (CSP) nonce for each request.
+   * This helps in preventing certain types of attacks like XSS.
+   * This is only on in production.
+   */
+  setupCsrf(app);
 
   /**
    * Sets up Nunjucks as the template engine for the Express app.
