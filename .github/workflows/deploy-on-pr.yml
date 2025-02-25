@@ -111,11 +111,11 @@ jobs:
         run: echo "https://${{ secrets.KUBE_CLUSTER }}/"
 
 
-      - name: Debug
-        id: debug
-        run: |
-          echo "issue number"
-          echo ${{context.issue.number}}
+      # - name: Debug
+      #   id: debug
+      #   run: |
+      #     echo "issue number"
+      #     echo ${{context.issue.number}}
 
       - name: Comment on PR with deployment URL
         uses: actions/github-script@v6
