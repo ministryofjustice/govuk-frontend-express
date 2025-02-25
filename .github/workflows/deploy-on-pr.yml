@@ -59,8 +59,8 @@ jobs:
       # issues: write
       # discussions: write
       # packages: write
-      pages: write
-      pull-requests: write
+      # pages: write
+      # pull-requests: write
       # repository-projects: write
       # security-events: write
       # statuses: write
