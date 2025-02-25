@@ -104,6 +104,21 @@ jobs:
           KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
           KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
 
+      - name: Deploy to Kubernetes2
+        run: |
+          kubectl config set-cluster ${KUBE_CLUSTER} --certificate-authority=./ca.crt --server=https://${KUBE_CLUSTER}
+          kubectl config set-credentials deploy-user --token=${{ secrets.KUBE_TOKEN }}
+          kubectl config set-context ${KUBE_CLUSTER} --cluster=${KUBE_CLUSTER} --user=deploy-user --namespace=${KUBE_NAMESPACE}
+          kubectl config use-context ${KUBE_CLUSTER}
+          kubectl -n ${KUBE_NAMESPACE} apply -f deployments/
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+          NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
+          KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
+          KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
+
       - name: Output deployment URL
         id: deployment-url
         run: echo "https://${{ secrets.KUBE_CLUSTER }}/"
