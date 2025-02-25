@@ -48,10 +48,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [code-linting, code-security-audit]
 
-    permissions:
-      id-token: write # This is required for requesting the JWT
-      contents: read # This is required for actions/checkout
-      issues: write
+    permissions: write-all
+      # id-token: write # This is required for requesting the JWT
+      # contents: read # This is required for actions/checkout
 
     steps:
       - name: Checkout code
