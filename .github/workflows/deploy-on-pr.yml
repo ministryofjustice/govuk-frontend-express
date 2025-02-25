@@ -125,7 +125,6 @@ jobs:
             console.log("issue number is " + context.issue.number);
             console.log("repo owner is " + context.repo.owner);
             console.log("repo is " + context.repo.repo);
-            console.log("url is " + ${url});
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
