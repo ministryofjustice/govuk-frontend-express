@@ -112,7 +112,8 @@ jobs:
 
 
       - run: |
-        echo "issue number ${{context.issue.number}}"
+        echo "issue number"
+        echo ${{context.issue.number}}
 
       - name: Comment on PR with deployment URL
         uses: actions/github-script@v6
