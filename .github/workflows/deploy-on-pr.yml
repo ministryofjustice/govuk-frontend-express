@@ -44,6 +44,7 @@ jobs:
         run: npm audit
 
   deploy:
+    environment: dev
     runs-on: ubuntu-latest
     needs: [code-linting, code-security-audit]
 
