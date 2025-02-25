@@ -129,14 +129,14 @@ jobs:
         id: deployment-url
         run: echo "https://${{ secrets.KUBE_CLUSTER }}/"
 
-      - name: Comment on PR with deployment URL
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const url = `https://${{ secrets.KUBE_CLUSTER }}/`;
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `Deployment URL: ${url}`
-            });
+      # - name: Comment on PR with deployment URL
+      #   uses: actions/github-script@v6
+      #   with:
+      #     script: |
+      #       const url = `https://${{ secrets.KUBE_CLUSTER }}/`;
+      #       github.rest.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: `Deployment URL: ${url}`
+      #       });
