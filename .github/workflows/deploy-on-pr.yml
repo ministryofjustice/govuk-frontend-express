@@ -122,6 +122,7 @@ jobs:
         with:
           script: |
             const url = `https://${{ secrets.KUBE_CLUSTER }}/`;
+            console.log("issue number is " + context.issue.number);
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
