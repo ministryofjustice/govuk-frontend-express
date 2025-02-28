@@ -1,12 +1,14 @@
 version: '3.8'
 
 services:
-  govuk-frontend-express :
+  govuk-frontend-express:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     environment:
       NODE_ENV: development
     volumes:
