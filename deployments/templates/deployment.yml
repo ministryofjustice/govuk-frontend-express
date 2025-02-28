@@ -17,5 +17,30 @@ spec:
       containers:
         - name: example
           image: ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}
+          env:
+            - name: CONTACT_EMAIL
+              value: "${CONTACT_EMAIL}"
+            - name: CONTACT_PHONE
+              value: "${CONTACT_PHONE}"
+            - name: DEPARTMENT_NAME
+              value: "${DEPARTMENT_NAME}"
+            - name: DEPARTMENT_URL
+              value: "${DEPARTMENT_URL}"
+            - name: RATELIMIT_HEADERS_ENABLED
+              value: "${RATELIMIT_HEADERS_ENABLED}"
+            - name: RATELIMIT_STORAGE_URI
+              value: "${RATELIMIT_STORAGE_URI}"
+            - name: RATE_LIMIT_MAX
+              value: "${RATE_LIMIT_MAX}"
+            - name: RATE_WINDOW_MS
+              value: "${RATE_WINDOW_MS}"
+            - name: SECRET_KEY
+              value: "${SECRET_KEY}"
+            - name: SERVICE_NAME
+              value: "${SERVICE_NAME}"
+            - name: SERVICE_PHASE
+              value: "${SERVICE_PHASE}"
+            - name: SERVICE_URL
+              value: "${SERVICE_URL}"
           ports:
-            - containerPort: 8080
+            - containerPort: 3000
