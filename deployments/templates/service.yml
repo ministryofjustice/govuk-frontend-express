@@ -7,5 +7,5 @@ spec:
     app: example # this should match the pod label in deployment.yml
   ports:
     - name: https
-      port: 8080
-      targetPort: 8080
+      port: 3000
+      targetPort: 3000

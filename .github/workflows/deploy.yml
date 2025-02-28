@@ -12,6 +12,17 @@ jobs:
       contents: read # This is required for actions/checkout
     steps:
       - uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          cat > .env << EOF
+          DEPARTMENT_NAME='Ministry of Justice'
+          RATELIMIT_HEADERS_ENABLED=True
+          RATE_LIMIT_MAX=${{ vars.RATE_LIMIT_MAX || 100 }}
+          RATE_WINDOW_MS=${{ vars.RATE_WINDOW_MS || 900000 }}
+          SERVICE_PHASE=${{ vars.SERVICE_PHASE }}
+          SERVICE_URL='${{ vars.SERVICE_URL }}'
+          EOF
       - uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 #v4.0.2
         with:
           role-to-assume: ${{ secrets.ECR_ROLE_TO_ASSUME }}
@@ -34,6 +45,19 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
           NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
+          CONTACT_EMAIL: ${{ secrets.CONTACT_EMAIL || vars.CONTACT_EMAIL }}
+          CONTACT_PHONE: ${{ secrets.CONTACT_PHONE || vars.CONTACT_PHONE }}
+          DEPARTMENT_NAME: ${{ secrets.DEPARTMENT_NAME || vars.DEPARTMENT_NAME || "Ministry of Justice" }}
+          DEPARTMENT_URL: ${{ secrets.DEPARTMENT_URL || vars.DEPARTMENT_URL }}
+          RATELIMIT_HEADERS_ENABLED: ${{ secrets.RATELIMIT_HEADERS_ENABLED || vars.RATELIMIT_HEADERS_ENABLED || "true" }}
+          RATELIMIT_STORAGE_URI: ${{ secrets.RATELIMIT_STORAGE_URI || vars.RATELIMIT_STORAGE_URI }}
+          RATE_LIMIT_MAX: ${{ secrets.RATE_LIMIT_MAX || vars.RATE_LIMIT_MAX || "100" }}
+          RATE_WINDOW_MS: ${{ secrets.RATE_WINDOW_MS || vars.RATE_WINDOW_MS || "900000" }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY || vars.SECRET_KEY }}
+          SERVICE_NAME: ${{ secrets.SERVICE_NAME || vars.SERVICE_NAME || "MOJ Express Skeleton" }}
+          SERVICE_PHASE: ${{ secrets.SERVICE_PHASE || vars.SERVICE_PHASE || "Alpha" }}
+          SERVICE_URL: ${{ secrets.SERVICE_URL || vars.SERVICE_URL }}
+
       - run: |
           echo "${{ secrets.KUBE_CERT }}" > ca.crt
           kubectl config set-cluster ${KUBE_CLUSTER} --certificate-authority=./ca.crt --server=https://${KUBE_CLUSTER}
