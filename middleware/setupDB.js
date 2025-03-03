@@ -22,8 +22,6 @@ export const setupDB = async (app) => {
     console.log('Database initialized and middleware set up.');
   } catch (error) {
     console.error('Failed to initialize database:', error);
-    app.use((req, res, next) => {
-      res.status(500).json({ error: "Database connection failed" });
-    });
+    process.exit(1);
   }
 };
