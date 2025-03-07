@@ -1,3 +1,4 @@
+// Optional for your frontend
 /**
  * @file Custom JavaScript for GOV.UK Frontend Express.
  * Displays an ASCII art displayAsciiBanner.js and job availability information in the console.
@@ -13,7 +14,7 @@ const messages = [
     "Welcome to GOVUK Frontend Express.",
     "Like what you see? Want to work with us?",
     "View our job availabilities or sign up for alerts:",
-    "https://jobs.justice.gov.uk/careers/SearchJobs" // Update this dynamically if needed
+    "{URL link to your departments jobs}" // Update this dynamically if needed
 ];
 
 /**
@@ -23,7 +24,7 @@ const messages = [
 const getFormattedMessage = () => messages.join("\n");
 
 /**
- * Displays an ASCII Art displayAsciiBanner.js with job messages in the console.
+ * Displays an ASCII Art displayAsciiBanner.js with department name in the console.
  */
 const displayConsoleBanner = () => {
     console.log(`
