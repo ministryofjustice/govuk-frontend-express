@@ -9,7 +9,7 @@ import { csrfSync } from "csrf-sync";
  * @param {import('express').Application} app - The Express application instance.
  */
 export const setupCsrf = (app) => {
-    const { csrfSynchronisedProtection } = csrfSync({
+    const {csrfSynchronisedProtection} = csrfSync({
         /**
          * Extracts the CSRF token from the request body.
          *
