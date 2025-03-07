@@ -20,6 +20,7 @@
     "chalk": "^5.4.1",
     "compression": "^1.7.4",
     "cookie-parser": "~1.4.6",
+    "crypto": "^1.0.1",
     "csrf-sync": "^4.0.3",
     "debug": "~4.4.0",
     "dotenv": "^16.4.7",
