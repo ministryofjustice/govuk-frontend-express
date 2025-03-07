@@ -1,17 +1,32 @@
-// Custom JS goes in here.
+/**
+ * @file Custom JavaScript for GOV.UK Frontend Express.
+ * Displays an ASCII art displayAsciiBanner.js and job availability information in the console.
+ *
+ * ASCII Art created by: https://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20
+ */
+
+/**
+ * Messages to display in the console.
+ * @type {string[]}
+ */
 const messages = [
     "Welcome to GOVUK Frontend Express.",
     "Like what you see? Want to work with us?",
     "View our job availabilities or sign up for alerts:",
-    "{{Department jobs page}}"
+    "https://jobs.justice.gov.uk/careers/SearchJobs" // Update this dynamically if needed
 ];
 
-// Join messages with spaces
-const formattedMessage = messages.join("\n");
+/**
+ * Joins messages into a single formatted string with line breaks.
+ * @returns {string} Formatted message string
+ */
+const getFormattedMessage = () => messages.join("\n");
 
-// ASCII Art for your department.
-//Art created by: https://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20
-console.log(`
+/**
+ * Displays an ASCII Art displayAsciiBanner.js with job messages in the console.
+ */
+const displayConsoleBanner = () => {
+    console.log(`
   __  __  ____       _ 
  |  \\/  |/ __ \\     | |
  | \\  / | |  | |    | |
@@ -19,4 +34,11 @@ console.log(`
  | |  | | |__| | |__| |
  |_|  |_|\\____/ \\____/  
 
-${formattedMessage}`);
+${getFormattedMessage()}
+`);
+};
+
+// Run displayAsciiBanner.js display when the script loads
+displayConsoleBanner();
+
+export { displayConsoleBanner };

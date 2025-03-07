@@ -1,11 +1,10 @@
 import express from 'express';
-import figlet from 'figlet';
 import chalk from 'chalk';
 import morgan from 'morgan';
 import compression from 'compression';
 import { setupCsrf, setupMiddlewares, setupConfig, setupDB } from '../middleware';
 import session from 'express-session';
-import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware } from '../utils';
+import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner} from '../utils';
 import config from '../config';
 import indexRouter from '../routes/index';
 import livereload from 'connect-livereload';
@@ -117,18 +116,13 @@ setupDB(app).then(() => {
     app.use(livereload());
   }
 
-  // Display ASCII Art on Startup
-    figlet(`${config.SERVICE_NAME}`, (err, data) => {
-      if (err) {
-        console.log('Something went wrong with ASCII art');
-        console.dir(err);
-        return;
-      }
-      console.clear(); // Clears terminal for a fresh display
-      console.log(chalk.blue.bold(data)); // Add color with chalk
-      console.log(chalk.green(`Server is running at:`));
-      console.log(chalk.cyan.underline(`http://localhost:${config.app.port}`));
-    });
+  /**
+   * Displays an ASCII Art banner for the application startup.
+   *
+   * @function displayAsciiBanner
+   * @param {object} config - Configuration object containing service details.
+   */
+  displayAsciiBanner(config)
 
   /**
    * Starts the Express server on the specified port.

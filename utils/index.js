@@ -4,5 +4,14 @@ import { nunjucksSetup } from './nunjucksSetup.js';
 import { rateLimitSetUp } from './rateLimitSetUp.js';
 import { axiosMiddleware } from './axiosSetup.js';
 import { initializeDB } from './sqliteSetup.js';
+import { displayAsciiBanner } from './displayAsciiBanner.js';
 
-export { getBuildNumber, getLatestBuildFile, helmetSetup, nunjucksSetup, rateLimitSetUp, axiosMiddleware, initializeDB };
+export { getBuildNumber,
+    getLatestBuildFile,
+    helmetSetup,
+    nunjucksSetup,
+    rateLimitSetUp,
+    axiosMiddleware,
+    initializeDB,
+    displayAsciiBanner
+};

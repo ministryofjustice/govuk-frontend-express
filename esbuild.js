@@ -13,6 +13,8 @@ const buildNumber = getBuildNumber();
 /**
  * Copies GOV.UK assets such as fonts and images from `govuk-frontend`
  * to the `public/assets` directory.
+ * @async
+ * @returns {Promise<void>} Resolves when the assets are copied successfully.
  */
 const copyGovukAssets = async () => {
   try {
@@ -29,6 +31,7 @@ const copyGovukAssets = async () => {
 
 /**
  * List of external dependencies that should not be bundled.
+ * @constant {string[]}
  */
 const externalModules = [
   ...builtinModules,
@@ -56,6 +59,8 @@ const externalModules = [
 
 /**
  * Builds SCSS files.
+ * @async
+ * @returns {Promise<void>} Resolves when SCSS is compiled successfully.
  */
 const buildScss = async () => {
   await esbuild.build({
@@ -65,6 +70,11 @@ const buildScss = async () => {
     plugins: [
       sassPlugin({
         resolveDir: path.resolve('src/scss'),
+        /**
+         * Transforms SCSS content to update asset paths.
+         * @param {string} source - Original SCSS source content.
+         * @returns {string} Transformed SCSS with updated asset paths.
+         */
         transform: (source) =>
             source
                 .replace(/url\(["']?\/assets\/fonts\/([^"')]+)["']?\)/g, 'url("../../node_modules/govuk-frontend/dist/govuk/assets/fonts/$1")')
@@ -89,6 +99,8 @@ const buildScss = async () => {
 
 /**
  * Builds `app.js`.
+ * @async
+ * @returns {Promise<void>} Resolves when `app.js` is bundled successfully.
  */
 const buildAppJs = async () => {
   await esbuild.build({
@@ -108,11 +120,12 @@ const buildAppJs = async () => {
 };
 
 /**
- * Builds `custom.js` with a build number.
+ * Builds `custom.js` with a unique build number.
+ * @async
+ * @returns {Promise<void>} Resolves when `custom.js` is bundled successfully.
  */
 const buildCustomJs = async () => {
   await esbuild.build({
-    // Add other custom js files to concat into one here.
     entryPoints: ['src/js/custom.js'],
     bundle: true,
     platform: 'browser',
@@ -129,6 +142,8 @@ const buildCustomJs = async () => {
 
 /**
  * Builds GOV.UK frontend files separately.
+ * @async
+ * @returns {Promise<void>} Resolves when `govuk-frontend.js` is copied successfully.
  */
 const buildGovukFrontend = async () => {
   await esbuild.build({
@@ -142,7 +157,9 @@ const buildGovukFrontend = async () => {
 };
 
 /**
- * Main build process
+ * Main build process that compiles SCSS, JavaScript, and copies assets.
+ * @async
+ * @returns {Promise<void>} Resolves when the entire build process is completed successfully.
  */
 const build = async () => {
   try {
@@ -154,7 +171,7 @@ const build = async () => {
     // Build SCSS
     await buildScss();
 
-    // Build JavaScript files
+    // Build JavaScript files in parallel
     await Promise.all([
       buildAppJs(),
       buildCustomJs(),
@@ -168,8 +185,10 @@ const build = async () => {
   }
 };
 
+// Export the build function
 export { build };
 
+// Run build if executed directly from the command line
 if (import.meta.url === `file://${process.argv[1]}`) {
   build().catch((error) => {
     console.error('❌ Build script failed:', error);
