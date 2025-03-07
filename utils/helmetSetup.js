@@ -11,7 +11,7 @@ import crypto from 'crypto';
  *
  * @param {object} req - Express request object.
  * @param {object} res - Express response object.
- * @param {function} next - Express next function.
+ * @param {Function} next - Express next function.
  */
 export const nonceMiddleware = (req, res, next) => {
   res.locals.cspNonce = crypto.randomBytes(16).toString('base64'); // Generate a secure random nonce
