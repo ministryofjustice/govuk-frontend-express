@@ -11,6 +11,24 @@ This is a template app using the GOV.UK Frontend and GOV.UK Design System which 
 
 The app is provided intentionally bare, with just the essential parts that all services need, such as error pages, accessibility statement and privacy notice. It uses a number of other packages to provide the [features](#features) described below with sensible and best-practice defaults. Please read the next steps section for guidance on how to start building out your app on top of this template.
 
+## Contents
+- [Prerequisites](#prerequisites)
+- [Getting started](#getting-started)
+  - [Set local environment variables](#set-local-environment-variables)
+  - [Install and run application for development](#install-and-run-application-for-development)
+  - [Install and run application for production](#install-and-run-application-for-production)
+    - [Node Version Manager](#node-version-manager)
+- [Routing](#routing)
+- [Testing](#testing)
+  - [Unit/Integration Testing example frameworks](#unitintegration-testing-example-frameworks)
+  - [E2E Testing example frameworks](#e2e-testing-example-frameworks)
+- [Features](#features)
+- [Contributors](#contributors)
+- [Support](#support)
+  - [Manage Outside Collaborators](#manage-outside-collaborators)
+- [Acknowledgment and Attribution](#acknowledgment-and-attribution)
+- [Licence](#licence)
+
 ## Prerequisites
 - node stable version [22.13.1]
 
@@ -51,12 +69,12 @@ npm run start
 
 You may have to tell your local machine to use the latest version of node already installed on your device, before installing and running the application. Use the following command.
 
-```
+```shell
 nvm install node
 ```
 
 ## Routing
-This skeleton uses the built-in Express JS routing. 
+This template uses the built-in Express JS routing. 
 
 A route is a section of Express code that associates an HTTP verb (`GET`, `POST`, `PUT`, `DELETE`, etc.), a URL path/pattern, and a function that is called to handle that pattern.
 
@@ -81,46 +99,27 @@ There are many frameworks to test your Express.js application (a few of these fr
 - Set up a test environment mirroring production.
 - Run tests and verify overall application behaviour.
 
-
 ## Features
-- [GOVUK Frontend Express](#govuk-frontend-express)
-  - [Prerequisites](#prerequisites)
-  - [Getting started](#getting-started)
-    - [Set local environment variables](#set-local-environment-variables)
-    - [Install and run application for development](#install-and-run-application-for-development)
-    - [Install and run application for production](#install-and-run-application-for-production)
-      - [Node Version Manager](#node-version-manager)
-  - [Routing](#routing)
-  - [Testing](#testing)
-    - [Unit/Integration Testing example frameworks](#unitintegration-testing-example-frameworks)
-    - [E2E Testing example frameworks](#e2e-testing-example-frameworks)
-  - [Features](#features)
-  - [Examples of features](#examples-of-features)
-    - [Asset management](#asset-management)
-    - [Cache busting](#cache-busting)
-    - [Form validation](#form-validation)
-    - [CSRF protection](#csrf-protection)
-    - [Content Security Policy (CSP)](#content-security-policy-csp)
-    - [Response compression](#response-compression)
-    - [Rate limiting](#rate-limiting)
-    - [Nunjucks support](#nunjucks-support)
-    - [ES6 JS Documentation](#es6-js-documentation)
-    - [Linter](#linter)
-  - [Contributors](#contributors)
-  - [Support](#support)
-    - [Manage Outside Collaborators](#manage-outside-collaborators)
-  - [Acknowledgment and Attribution](#acknowledgment-and-attribution)
-  - [Licence](#licence)
-
-## Examples of features 
-Please refer to the specific packages documentation for more details.
+  - [Asset management](#asset-management)
+  - [Cache busting](#cache-busting)
+  - [Form validation](#form-validation)
+  - [CSRF protection](#csrf-protection)
+  - [Content Security Policy (CSP)](#content-security-policy-csp)
+  - [Response compression](#response-compression)
+  - [Rate limiting](#rate-limiting)
+  - [Nunjucks support](#nunjucks-support)
+  - [ES6 JS Documentation](#es6-js-documentation)
+  - [Linter](#linter)
+  - [Axios](#axios)
+  - [SQLite database](#sqlite-database)
+  - [Further reading](#further-reading)
 
 ### Asset management
 This is node.js scripts at them moment, but [ESBuild](https://esbuild.github.io/) coming soon.
 
 ### Cache busting
-Caching allows Express.js applications to store and serve frequently requested data efficiently, reducing the strain on servers and minimizing latency. This skeleton improves caching through:
-- intelligent browser caching, when using the skeleton for development of an application
+Caching allows Express.js applications to store and serve frequently requested data efficiently, reducing the strain on servers and minimizing latency. This template improves caching through:
+- intelligent browser caching, when using the template for development of an application
 - employing a package management tool, to improve the caching process of installing, upgrading, configuring, and removing software from your application
 
 ### Form validation
@@ -128,7 +127,7 @@ This template app contains a basic demo for form validation, when running this a
 
 
 ### CSRF protection
-The template use the [csurf](https://npmjs.com/package/csurf) middleware, to help keep your app secure.
+The template uses the [csrf-sync](https://www.npmjs.com/package/csrf-sync/v/1.0.2) middleware, to help keep your app secure.
 
 ### Content Security Policy (CSP)
 This app uses [helmet.js](https://helmetjs.github.io/) to help secure this Express.js template app by setting HTTP response headers, which includes your CSP. 
@@ -138,7 +137,7 @@ The app uses a Node.js compression middleware called [compression](https://www.n
 
 
 ### Rate limiting
-This skeleton uses a basic rate-limiting middleware for Express.js, called `express-rate-limit`. It is used to limit repeated requests to public APIs and/or endpoints such as password reset. 
+This template uses a basic rate-limiting middleware for Express.js, called `express-rate-limit`. It is used to limit repeated requests to public APIs and/or endpoints such as password reset. 
 
 For further information please [visit the documentation here](https://www.npmjs.com/package/express-rate-limit?activeTab=readme).
 
@@ -160,7 +159,72 @@ syntax errors, stylistic issues, and potential bugs before they become actual pr
 
 To run ESlint:
 
-`npm run lint`
+```shell
+npm run lint
+```
+
+### Axios
+Within this template [axios](https://github.com/axios/axios) with [middleware-axios](https://github.com/krutoo/middleware-axios) (used as a utility `../utils/axiosSetup.mjs`, and can be extended with further middleware) is set up and ready to use out of the box.
+
+Below is an example of implementation of how to use the `axios_api` function, in other modules to make server/api calls:
+
+```mjs
+// routes/index.mjs
+import express from 'express';
+const router = express.Router();
+/* GET home page. */
+router.get('/', (req, res, next) => {
+  res.render('main/index', { title: 'Express' });
+});
+// Make an API call with `Axios` and `middleware-axios`
+// GET users from external API
+router.get('/users', async (req, res, next) => {
+  try {
+      // Use the wrapped Axios instance attached to the request object (via middleware-axios)
+      const response = await req.axiosMiddleware.get('https://jsonplaceholder.typicode.com/users');
+      res.json(response.data);
+  } catch (error) {
+      next(error);
+  }
+});
+export default router;
+```
+
+
+### SQLite database
+In this template, [SQLite3](https://docs.python.org/3/library/sqlite3.html) is set up and ready to use out of the box. However, if you wish to use something
+else as your database, please see [Database integration Options](https://expressjs.com/en/guide/database-integration.html).
+
+You'll find 2 main js files: `utils/sqliteSetup.js` & `middleware/setupDB.js`.
+
+- `utils/sqliteSetup.js`, is where you can make your database connection and initialise your database schema. In this template we create a dummy users table with `id`, `name`, and `email fields`.
+
+```mjs
+  // Initialize your database schema here.
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE
+    )
+  `);
+```
+
+- `middleware/setupDB.js`, is set up to allow database queries to be run against your SQLite3. It sets up your database to access any of your routes, such as this example below.
+```mjs
+router.get('/users', async (req, res, next) => {
+  try {
+    const rows = await req.db.all("SELECT * FROM users");
+    res.json({ users: rows });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+```
+
+### Further reading 
+Please refer to the specific packages documentation for more details.
+
 
 ## Contributors
 - [Patrick Sweeting](https://github.com/psweeting1) (Primary maintainer)

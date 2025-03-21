@@ -1,9 +1,10 @@
 import express from 'express';
+import chalk from 'chalk';
 import morgan from 'morgan';
 import compression from 'compression';
-import { csrfProtection, setupMiddlewares, setupConfig, setupDB } from '../middleware';
+import { setupCsrf, setupMiddlewares, setupConfig, setupDB } from '../middleware';
 import session from 'express-session';
-import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware } from '../utils';
+import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner} from '../utils';
 import config from '../config';
 import indexRouter from '../routes/index';
 import livereload from 'connect-livereload';
@@ -45,13 +46,6 @@ setupDB(app).then(() => {
   }));
 
   /**
-   * Middleware function to set up a Content Security Policy (CSP) nonce for each request.
-   * This helps in preventing certain types of attacks like XSS.
-   * This is only on in production.
-   */
-  app.use(csrfProtection);
-
-  /**
    * Sets up security headers using Helmet to protect the app from well-known web vulnerabilities.
    *
    * @param {import('express').Application} app - The Express application instance.
@@ -72,6 +66,13 @@ setupDB(app).then(() => {
     resave: false, // Prevents resaving unchanged sessions
     saveUninitialized: false // Only save sessions that are modified
   }));
+
+  /**
+   * Middleware function to set up a Content Security Policy (CSP) nonce for each request.
+   * This helps in preventing certain types of attacks like XSS.
+   * This is only on in production.
+   */
+  setupCsrf(app);
 
   /**
    * Sets up Nunjucks as the template engine for the Express app.
@@ -116,11 +117,19 @@ setupDB(app).then(() => {
   }
 
   /**
+   * Displays an ASCII Art banner for the application startup.
+   *
+   * @function displayAsciiBanner
+   * @param {object} config - Configuration object containing service details.
+   */
+  displayAsciiBanner(config)
+
+  /**
    * Starts the Express server on the specified port.
    * Logs the port number to the console upon successful startup.
    */
   app.listen(config.app.port, () => {
-    console.log(`Server running on port ${config.app.port}`);
+    console.log(chalk.yellow(`Listening on port ${config.app.port}...`));
   });
 
 }).catch(error => {
