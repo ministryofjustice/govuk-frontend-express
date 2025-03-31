@@ -48,7 +48,7 @@
     "eslint": "^9.19.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-jsdoc": "^50.4.3",
-    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-prettier": "^5.2.5",
     "globals": "^15.14.0",
     "livereload": "^0.9.3",
     "middleware-axios": "^2.1.6",
