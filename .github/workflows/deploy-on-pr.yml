@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.17.0'
+          node-version: '22.13.1'
 
       - name: Install dependencies
         run: npm install
@@ -35,7 +35,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.17.0'
+          node-version: '22.13.1'
 
       - name: Install dependencies
         run: npm install
@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [code-linting, code-security-audit]
 
-    permissions: 
+    permissions:
       id-token: write # This is required for requesting the JWT
       contents: read # This is required for actions/checkout
       pull-requests: write # This is required to add a comment to the PR
@@ -61,7 +61,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.17.0'
+          node-version: '22.13.1'
 
       - name: Install dependencies
         run: npm install

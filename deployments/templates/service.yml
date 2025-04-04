@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: example-service
+  name: govuk-frontend-express-skeleton-service
 spec:
   selector:
-    app: example
+    app: govuk-frontend-express-skeleton
   ports:
     - name: https
       port: 3000

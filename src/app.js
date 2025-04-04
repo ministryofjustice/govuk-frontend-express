@@ -8,6 +8,7 @@ import { nunjucksSetup, rateLimitSetUp, helmetSetup, displayAsciiBanner} from '.
 import config from '../config';
 import indexRouter from '../routes/index';
 import livereload from 'connect-livereload';
+import { axiosMiddleware } from '../utils/axiosSetup.js'; // Import axiosMiddleware
 
 const app = express();
 
@@ -99,6 +100,15 @@ setupDB(app).then(() => {
    * Sets up request logging using Morgan for better debugging and analysis.
    */
   app.use(morgan('dev'));
+
+  /**
+   * Apply axiosMiddleware globally to all routes.
+   * This makes the Axios instance available in all requests.
+   */
+  app.use((req, res, next) => {
+    req.axiosMiddleware = axiosMiddleware;
+    next();
+  });
 
   /**
    * Registers the main router for the application.

@@ -1,10 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: example-ingress
+  name: govuk-frontend-express-skeleton-ingress
   annotations:
-    external-dns.alpha.kubernetes.io/set-identifier: example-ingress-${NAMESPACE}-green
+    kubernetes.io/ingress.class: default
+    external-dns.alpha.kubernetes.io/set-identifier: govuk-frontend-express-skeleton-ingress-${NAMESPACE}-green
     external-dns.alpha.kubernetes.io/aws-weight: '100'
+
 spec:
   ingressClassName: default
   tls:
@@ -15,9 +17,9 @@ spec:
       http:
         paths:
           - path: /
-            pathType: ImplementationSpecific
+            pathType: Prefix
             backend:
               service:
-                name: example-service
+                name: govuk-frontend-express-skeleton-service
                 port:
                   number: 3000

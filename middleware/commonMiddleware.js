@@ -16,7 +16,7 @@ export const setupMiddlewares = (app) => {
   // Parses URL-encoded bodies (form submissions)
   app.use(bodyParser.urlencoded({ extended: true }));
 
-  // Serve static files from the specified public directory
+ // Serve static files from the specified public directory
   app.use(express.static(config.paths.static));
 
   // Parses JSON request bodies

@@ -1,22 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: example-deployment
+  name: govuk-frontend-express-skeleton-deployment
   labels:
-    app: example
+    app: govuk-frontend-express-skeleton
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: example
+      app: govuk-frontend-express-skeleton
   template:
     metadata:
       labels:
-        app: example
+        app: govuk-frontend-express-skeleton
     spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
-        - name: example-container
+        - name: govuk-frontend-express-skeleton-container
           image: ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop: ["ALL"]
           env:
             - name: CONTACT_EMAIL
               value: "${CONTACT_EMAIL}"
@@ -42,5 +54,7 @@ spec:
               value: "${SERVICE_PHASE}"
             - name: SERVICE_URL
               value: "${SERVICE_URL}"
+            - name: NODE_ENV
+              value: "production"
           ports:
             - containerPort: 3000

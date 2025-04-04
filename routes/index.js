@@ -1,17 +1,10 @@
 import express from 'express';
-import { axiosMiddleware } from '../utils/axiosSetup.js'; // Import axiosMiddleware
 
 const router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res) => {
   res.render('main/index');
-});
-
-// Apply axiosMiddleware only for routes that need it
-router.use('/users', (req, res, next) => {
-  req.axiosMiddleware = axiosMiddleware; // Attach axiosMiddleware to the request object
-  next();
 });
 
 // Make an API call with `Axios` and `middleware-axios`
