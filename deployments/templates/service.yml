@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: example-service
+  name: govuk-frontend-express-service
 spec:
   selector:
-    app: example # this should match the pod label in deployment.yml
+    app: govuk-frontend-express # this should match the pod label in deployment.yml
   ports:
     - name: https
       port: 3000
