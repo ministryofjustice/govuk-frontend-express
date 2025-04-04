@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import compression from 'compression';
 import { setupCsrf, setupMiddlewares, setupConfig, setupDB } from '../middleware';
 import session from 'express-session';
-import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner} from '../utils';
+import { nunjucksSetup, rateLimitSetUp, helmetSetup, displayAsciiBanner} from '../utils';
 import config from '../config';
 import indexRouter from '../routes/index';
 import livereload from 'connect-livereload';
@@ -16,8 +16,6 @@ const app = express();
  * @param {import('express').Application} app - The Express application instance.
  */
 setupMiddlewares(app);
-
-app.use(axiosMiddleware);
 
 // Set up DB to be used in requests
 setupDB(app).then(() => {
@@ -63,7 +61,7 @@ setupDB(app).then(() => {
   app.use(session({
     secret: 's3Cur3', // Secret for session encryption
     name: 'sessionId', // Custom session ID cookie name
-    resave: false, // Prevents resaving unchanged sessions
+    resave: false, // Prevents re-saving unchanged sessions
     saveUninitialized: false // Only save sessions that are modified
   }));
 
