@@ -1,0 +1,13 @@
+# Dependency directories
+node_modules/
+
+# IDEA
+.idea/
+
+# Visual Studios
+.trunk/
+.DS_Store
+
+# MOJ Express Skeleton
+public/
+.env

@@ -11,21 +11,6 @@ This is a template app using the GOV.UK Frontend and GOV.UK Design System which 
 
 The app is provided intentionally bare, with just the essential parts that all services need, such as error pages, accessibility statement and privacy notice. It uses a number of other packages to provide the [features](#features) described below with sensible and best-practice defaults. Please read the next steps section for guidance on how to start building out your app on top of this template.
 
-**Monolithic Repository**
-
-This repository contains two versions of the same template. The aim is to accommodate developers who prefer different JavaScript environments:
-
-ES6+ Version: Suitable for developers who do not wish to use TypeScript in their projects.
-TypeScript Version: Designed for developers who want to take advantage of TypeScript features and strict typing.
-By maintaining both versions within the same repository, we can ensure consistency, centralized updates, and easier maintenance.
-
-Example of project layout:
-```
-govuk-frontend-express/            # Root directory for the monolithic repo
-├── ES6/                           # ES6+ version of the template
-├── TypeScript/                    # TypeScript version of the template
-└── README.md                      # Main repository documentation
-```
 ## Contents
 - [Prerequisites](#prerequisites)
 - [Getting started](#getting-started)
@@ -48,8 +33,6 @@ govuk-frontend-express/            # Root directory for the monolithic repo
 - node stable version [22.13.1]
 
 ## Getting started
-
-TODO: Write how to CD into correct directory for users to perform the following below.
 
 ### Set local environment variables
 
