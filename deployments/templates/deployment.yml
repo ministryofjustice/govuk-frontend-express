@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: govuk-frontend-express-deployment
+  name: example-deployment
   labels:
-    app: govuk-frontend-express
+    app: example
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: govuk-frontend-express # this should match the selector in service.yml
+      app: example
   template:
     metadata:
       labels:
-        app: govuk-frontend-express # this should match the selector in service.yml
+        app: example
     spec:
       containers:
-        - name: govuk-frontend-express
+        - name: example-container
           image: ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}
           env:
             - name: CONTACT_EMAIL
