@@ -38,7 +38,6 @@ const externalModules = [
   'express',
   'nunjucks',
   'dotenv',
-  'crypto',
   'cookie-signature',
   'cookie-parser',
   'body-parser',
