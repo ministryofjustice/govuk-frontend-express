@@ -4,10 +4,11 @@ import morgan from 'morgan';
 import compression from 'compression';
 import { setupCsrf, setupMiddlewares, setupConfig, setupDB } from '../middleware';
 import session from 'express-session';
-import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner} from '../utils';
+import { nunjucksSetup, rateLimitSetUp, helmetSetup, displayAsciiBanner} from '../utils';
 import config from '../config';
 import indexRouter from '../routes/index';
 import livereload from 'connect-livereload';
+import { axiosMiddleware } from '../utils/axiosSetup.js'; // Import axiosMiddleware
 
 const app = express();
 
@@ -16,8 +17,6 @@ const app = express();
  * @param {import('express').Application} app - The Express application instance.
  */
 setupMiddlewares(app);
-
-app.use(axiosMiddleware);
 
 // Set up DB to be used in requests
 setupDB(app).then(() => {
@@ -63,7 +62,7 @@ setupDB(app).then(() => {
   app.use(session({
     secret: 's3Cur3', // Secret for session encryption
     name: 'sessionId', // Custom session ID cookie name
-    resave: false, // Prevents resaving unchanged sessions
+    resave: false, // Prevents re-saving unchanged sessions
     saveUninitialized: false // Only save sessions that are modified
   }));
 
@@ -101,6 +100,15 @@ setupDB(app).then(() => {
    * Sets up request logging using Morgan for better debugging and analysis.
    */
   app.use(morgan('dev'));
+
+  /**
+   * Apply axiosMiddleware globally to all routes.
+   * This makes the Axios instance available in all requests.
+   */
+  app.use((req, res, next) => {
+    req.axiosMiddleware = axiosMiddleware;
+    next();
+  });
 
   /**
    * Registers the main router for the application.

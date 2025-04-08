@@ -1,15 +1,15 @@
 {
-  "name": "moj-express-skeleton",
+  "name": "govuk-frontend-express",
   "version": "0.1.0",
   "private": true,
   "main": "public/app.js",
   "type": "module",
   "scripts": {
-    "start": "node public/app.js",
+    "start": "npm run build && node public/app.js",
     "clean": "rimraf public",
     "build": "npm run clean && node esbuild.js",
     "lint": "npx eslint . --ignore-pattern \"node_modules/*\" --ignore-pattern \"public/*\" --fix",
-    "dev": "nodemon --watch src --ext js,scss --exec 'node start-server.js'"
+    "dev": "npm run build && nodemon --watch src --ext js,scss --exec 'node start-server.js'"
   },
   "engines": {
     "node": "22.13.1"
@@ -18,7 +18,7 @@
     "axios": "^1.8.4",
     "body-parser": "^1.20.3",
     "chalk": "^5.4.1",
-    "compression": "^1.7.4",
+    "compression": "^1.8.0",
     "cookie-parser": "~1.4.6",
     "csrf-sync": "^4.0.3",
     "debug": "~4.4.0",
@@ -29,7 +29,7 @@
     "express-validator": "^7.2.1",
     "figlet": "^1.8.0",
     "fs-extra": "^11.3.0",
-    "govuk-frontend": "^5.8.0",
+    "govuk-frontend": "^5.9.0",
     "helmet": "^8.0.0",
     "http-errors": "~2.0.0",
     "morgan": "~1.10.0",
@@ -46,14 +46,14 @@
     "esbuild-sass-plugin": "^3.3.1",
     "eslint": "^9.19.0",
     "eslint-config-prettier": "^10.0.1",
-    "eslint-plugin-jsdoc": "^50.4.3",
-    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-jsdoc": "^50.6.9",
+    "eslint-plugin-prettier": "^5.2.5",
     "globals": "^15.14.0",
     "livereload": "^0.9.3",
-    "middleware-axios": "^2.1.6",
+    "middleware-axios": "^3.0.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
-    "sass": "^1.77.8"
+    "sass": "^1.86.1"
   }
 }

@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: govuk-frontend-express-skeleton-deployment
+  labels:
+    app: govuk-frontend-express-skeleton
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: govuk-frontend-express-skeleton
+  template:
+    metadata:
+      labels:
+        app: govuk-frontend-express-skeleton
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: govuk-frontend-express-skeleton-container
+          image: ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop: ["ALL"]
+          env:
+            - name: CONTACT_EMAIL
+              value: "${CONTACT_EMAIL}"
+            - name: CONTACT_PHONE
+              value: "${CONTACT_PHONE}"
+            - name: DEPARTMENT_NAME
+              value: "${DEPARTMENT_NAME}"
+            - name: DEPARTMENT_URL
+              value: "${DEPARTMENT_URL}"
+            - name: RATELIMIT_HEADERS_ENABLED
+              value: "${RATELIMIT_HEADERS_ENABLED}"
+            - name: RATELIMIT_STORAGE_URI
+              value: "${RATELIMIT_STORAGE_URI}"
+            - name: RATE_LIMIT_MAX
+              value: "${RATE_LIMIT_MAX}"
+            - name: RATE_WINDOW_MS
+              value: "${RATE_WINDOW_MS}"
+            - name: SECRET_KEY
+              value: "${SECRET_KEY}"
+            - name: SERVICE_NAME
+              value: "${SERVICE_NAME}"
+            - name: SERVICE_PHASE
+              value: "${SERVICE_PHASE}"
+            - name: SERVICE_URL
+              value: "${SERVICE_URL}"
+            - name: NODE_ENV
+              value: "production"
+          ports:
+            - containerPort: 3000

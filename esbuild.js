@@ -69,6 +69,7 @@ const buildScss = async () => {
     plugins: [
       sassPlugin({
         resolveDir: path.resolve('src/scss'),
+        loadPaths: ['node_modules'], // Add loadPaths to help resolve imports
         /**
          * Transforms SCSS content to update asset paths.
          * @param {string} source - Original SCSS source content.
