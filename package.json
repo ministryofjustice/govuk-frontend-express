@@ -9,7 +9,7 @@
     "clean": "rimraf public",
     "build": "npm run clean && node esbuild.js",
     "lint": "npx eslint . --ignore-pattern \"node_modules/*\" --ignore-pattern \"public/*\" --fix",
-    "dev": "nodemon --watch src --ext js,scss --exec 'node start-server.js'"
+    "dev": "nodemon --watch . --ext js,json,scss --ignore node_modules --ignore public/ --delay 500ms --exec 'node start-server.js'"
   },
   "engines": {
     "node": "22.13.1"
