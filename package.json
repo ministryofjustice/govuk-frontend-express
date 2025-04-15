@@ -27,7 +27,7 @@
     "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.0",
     "express-validator": "^7.2.1",
-    "figlet": "^1.8.0",
+    "figlet": "^1.8.1",
     "fs-extra": "^11.3.0",
     "govuk-frontend": "^5.8.0",
     "helmet": "^8.0.0",
