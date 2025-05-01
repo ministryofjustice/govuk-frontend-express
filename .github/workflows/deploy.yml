@@ -43,13 +43,15 @@ jobs:
       - name: Run security audit
         run: npm audit
 
-  snyk:
-    name: Snyk Security Scan
-    uses: ministryofjustice/laa-reusable-github-actions/.github/workflows/snyk.yml@73a98b3336f71a21c46e6b588cd3afaaab052649
-    with:
-      tag: "laa-manage-your-civil-cases"
-    secrets:
-      snyk_token: ${{ secrets.SNYK_TOKEN }}
+# The govuk-frontend-express skeleton App does not have Snyk set up so this section is commented out.
+# Uncomment and modify as needed for your application. you will need to set up a Snyk token in your repository's environemnt secrets as SNYK_TOKEN.
+#   snyk:
+#     name: Snyk Security Scan
+#     uses: ministryofjustice/laa-reusable-github-actions/.github/workflows/snyk.yml@73a98b3336f71a21c46e6b588cd3afaaab052649
+#     with:
+#       tag: "govuk-frontend-express" #update this to a tag of your choice
+#     secrets:
+#       snyk_token: ${{ secrets.SNYK_TOKEN }}
 
   build-image:
     name: Build Docker Image
@@ -91,14 +93,14 @@ jobs:
             dockerfile_path: Dockerfile
             image_tag: ${{ github.sha }}
 
-  deploy-uat:
-    name: Deploy feature branch to UAT
+  deploy-dev:
+    name: Deploy feature branch to dev
     runs-on: ubuntu-latest
-    environment: uat
+    environment: dev
     needs:
       - code-linting
       - code-security-audit
-      - snyk
+    #   - snyk # Uncomment if you have Snyk set up
       - build-image
     permissions:
       id-token: write
@@ -114,8 +116,8 @@ jobs:
           kube-cluster: ${{ secrets.KUBE_CLUSTER }}
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
 
-      - name: Deploy using Helm to UAT
-        run: ./scripts/deploy.sh uat
+      - name: Deploy using Helm to dev
+        run: ./scripts/deploy.sh dev
         env:
           REGISTRY: ${{  secrets.ECR_REGISTRY_URL }} 
           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
