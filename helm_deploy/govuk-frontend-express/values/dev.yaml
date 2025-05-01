@@ -76,9 +76,9 @@ readinessProbe:
   initialDelaySeconds: 30
 
 env:
-  SERVICE_NAME: "Manage your civil cases"
+  SERVICE_NAME: "GOV.UK Frontend Express Skeleton"
   SERVICE_PHASE: "Alpha"
-  DEPARTMENT_NAME: "LAA Digital"
+  DEPARTMENT_NAME: "MOJ Digital"
 
 autoscaling:
   enabled: false
