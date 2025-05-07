@@ -1,0 +1,108 @@
+# # Default values for laa-manage-your-civil-cases.
+# # This is a YAML-formatted file.
+# # Declare variables to be passed into your templates.
+
+# replicaCount: 1
+
+# image:
+#   repository: nginx
+#   pullPolicy: IfNotPresent
+#   # Overrides the image tag whose default is the chart appVersion.
+#   tag: ""
+
+# imagePullSecrets: []
+# nameOverride: ""
+# fullnameOverride: ""
+
+# serviceAccount:
+#   create: false
+#   # The name of the service account to use.
+#   # If not set and create is true, a name is generated using the fullname template
+#   name: "gfe-github-action-service-account"
+
+# podAnnotations: {}
+# podLabels: {}
+
+# podSecurityContext: {}
+#   # fsGroup: 2000
+
+# securityContext: {}
+#   # capabilities:
+#   #   drop:
+#   #   - ALL
+#   # readOnlyRootFilesystem: true
+#   # runAsNonRoot: true
+#   # runAsUser: 1000
+
+# service:
+#   type: ClusterIP
+#   port: 80
+
+
+# ingress:
+#   enabled: true
+#   hosts:
+#     - host: <add_host_name>-<add_env>.cloud-platform.service.justice.gov.uk
+#       paths:
+#         - path: /
+#           pathType: Prefix
+#   annotations:
+#     external-dns.alpha.kubernetes.io/set-identifier: "<chart_name>-<release_name>-<namespace>-green"
+#     external-dns.alpha.kubernetes.io/aws-weight: "100"
+
+
+# resources: {}
+#   # We usually recommend not to specify default resources and to leave this as a conscious
+#   # choice for the user. This also increases chances charts run on environments with little
+#   # resources, such as Minikube. If you do want to specify resources, uncomment the following
+#   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+#   # limits:
+#   #   cpu: 100m
+#   #   memory: 128Mi
+#   # requests:
+#   #   cpu: 100m
+#   #   memory: 128Mi
+
+# livenessProbe:
+#   httpGet:
+#     path: /status
+#     port: http
+#   initialDelaySeconds: 30
+
+# readinessProbe:
+#   httpGet:
+#     path: /health
+#     port: http
+#   initialDelaySeconds: 30
+#   periodSeconds: 60
+
+# env:
+#   SERVICE_NAME: "Manage your civil cases"
+#   SERVICE_PHASE: "Alpha"
+#   DEPARTMENT_NAME: "LAA Digital"
+
+# autoscaling:
+#   enabled: false
+#   minReplicas: 1
+#   maxReplicas: 100
+#   targetCPUUtilizationPercentage: 80
+#   # targetMemoryUtilizationPercentage: 80
+
+# # Additional volumes on the output Deployment definition.
+# volumes: []
+# # - name: foo
+# #   secret:
+# #     secretName: mysecret
+# #     optional: false
+
+# # Additional volumeMounts on the output Deployment definition.
+# volumeMounts: []
+# # - name: foo
+# #   mountPath: "/etc/foo"
+# #   readOnly: true
+
+# nodeSelector: {}
+
+# tolerations: []
+
+# affinity: {}

@@ -1,0 +1,211 @@
+name: Deploy with Helm
+
+on:
+  push:
+    branches:
+      - '**'
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  code-linting:
+    name: Code Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.13.1'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Run ESLint
+        run: npm run lint
+
+  code-security-audit:
+    name: Code Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.13.1'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Run security audit
+        run: npm audit
+
+# The govuk-frontend-express skeleton App does not have Snyk set up so this section is commented out.
+# Uncomment and modify as needed for your application. you will need to set up a Snyk token in your repository's environemnt secrets as SNYK_TOKEN.
+#   snyk:
+#     name: Snyk Security Scan
+#     uses: ministryofjustice/laa-reusable-github-actions/.github/workflows/snyk.yml@73a98b3336f71a21c46e6b588cd3afaaab052649
+#     with:
+#       tag: "govuk-frontend-express" #update this to a tag of your choice
+#     secrets:
+#       snyk_token: ${{ secrets.SNYK_TOKEN }}
+
+  build-image:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up AWS credentials for ECR and Kubernetes
+        uses: aws-actions/configure-aws-credentials@ececac1a45f3b08a01d2dd070d28d111c5fe6722
+        with:
+          role-to-assume: ${{ secrets.ECR_ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.ECR_REGION }}
+
+      - uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076
+        id: login-ecr
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2
+        with:
+          install: true
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build and push image with caching
+        uses: ministryofjustice/laa-reusable-github-actions/.github/actions/build_and_push_with_cache@73a98b3336f71a21c46e6b588cd3afaaab052649
+        with:
+            image_registry: ${{ secrets.ECR_REGISTRY_URL }}
+            image_repo: ${{ vars.ECR_REPOSITORY }}
+            dockerfile_path: Dockerfile
+            image_tag: ${{ github.sha }}
+
+  deploy-dev:
+    name: Deploy feature branch to dev
+    runs-on: ubuntu-latest
+    environment: dev
+    needs:
+      - code-linting
+      - code-security-audit
+    #   - snyk # Uncomment if you have Snyk set up
+      - build-image
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to cluster
+        uses: ministryofjustice/laa-reusable-github-actions/.github/actions/authenticate_to_cluster@d61e0cf24795b75f719a8981a4dc21e1334a1455
+        with:
+          kube-cert: ${{ secrets.KUBE_CERT }}
+          kube-token: ${{ secrets.KUBE_TOKEN }}
+          kube-cluster: ${{ secrets.KUBE_CLUSTER }}
+          kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
+
+      - name: Deploy using Helm to dev
+        run: ./scripts/deploy.sh dev
+        env:
+          REGISTRY: ${{  secrets.ECR_REGISTRY_URL }} 
+          REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          K8S_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
+
+
+#       The govuk-frontend-express skeleton App does not have a staging or production environment so this section is commented out. 
+#        Uncomment and modify as needed for your application, renaming environments as appropriate.
+
+# deploy-staging job deploys just the main branch to the staging environment.
+#   deploy-staging:
+#     name: Deploy to Staging
+#     needs: deploy-uat
+#     if: github.ref_name == 'main'
+#     environment: staging
+#     runs-on: ubuntu-latest
+#     permissions:
+#       id-token: write
+#       contents: read
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - name: Authenticate to cluster
+#         uses: ministryofjustice/laa-reusable-github-actions/.github/actions/authenticate_to_cluster@d61e0cf24795b75f719a8981a4dc21e1334a1455
+#         with:
+#           kube-cert: ${{ secrets.KUBE_CERT }}
+#           kube-token: ${{ secrets.KUBE_TOKEN }}
+#           kube-cluster: ${{ secrets.KUBE_CLUSTER }}
+#           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
+
+#       - name: Deploy using Helm to Staging
+#         run: ./scripts/deploy.sh staging
+#         env:
+#           REGISTRY: ${{  secrets.ECR_REGISTRY_URL }} 
+#           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+#           IMAGE_TAG: ${{ github.sha }}
+#           GITHUB_SHA: ${{ github.sha }}
+#           GITHUB_REF_NAME: ${{ github.ref_name }}
+#           K8S_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
+
+#       If you want to notify a Slack channel of deployment failure, uncomment the following steps.
+#       You will also need to set up a Slack webhook URL in your repository's environment specific secrets as SLACK_WEBHOOK_URL.
+#       - name: Notify deployment failure
+#         if: failure()
+#         run: |
+#           curl -X POST -H 'Content-type: application/json' --data '{"text":"Manage Civil Cases deployment to Staging failed!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+#         env:
+#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+#  deploy-production job deploys just the main branch to the production environment.
+#   deploy-production:
+#     name: Deploy to Production
+#     needs: deploy-staging
+#     environment: production
+#     if: github.ref_name == 'main'
+#     runs-on: ubuntu-latest
+#     permissions:
+#       id-token: write
+#       contents: read
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       - name: Authenticate to cluster
+#         uses: ministryofjustice/laa-reusable-github-actions/.github/actions/authenticate_to_cluster@d61e0cf24795b75f719a8981a4dc21e1334a1455
+#         with:
+#           kube-cert: ${{ secrets.KUBE_CERT }}
+#           kube-token: ${{ secrets.KUBE_TOKEN }}
+#           kube-cluster: ${{ secrets.KUBE_CLUSTER }}
+#           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
+
+#       - name: Deploy using Helm to Production
+#         run: ./scripts/deploy.sh production
+#         env:
+#           REGISTRY: ${{  secrets.ECR_REGISTRY_URL }} 
+#           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+#           IMAGE_TAG: ${{ github.sha }}
+#           GITHUB_SHA: ${{ github.sha }}
+#           GITHUB_REF_NAME: ${{ github.ref_name }}
+#           K8S_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
+
+#       If you want to notify a Slack channel of deployment failure, uncomment the following steps.
+#       You will also need to set up a Slack webhook URL in your repository's environment specific secrets as SLACK_WEBHOOK_URL.
+#       - name: Notify deployment failure
+#         if: failure()
+#         run: |
+#           curl -X POST -H 'Content-type: application/json' --data '{"text":"Manage Civil Cases deployment to Production failed!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+#         env:
+#           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
