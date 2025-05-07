@@ -18,4 +18,8 @@ router.get('/users', async (req, res, next) => {
   }
 });
 
+// basic liveness and readiness probes used by Helm deployments
+router.get('/status', (req, res) => res.status(200).send('OK'));
+router.get('/health', (req, res) => res.status(200).send('Healthy'));
+
 export default router;
