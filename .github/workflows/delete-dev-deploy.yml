@@ -1,0 +1,25 @@
+name: Delete Dev Helm Deployment
+
+# This workflow deletes Helm deployments when PRs are closed
+on:
+  # pull_request_target runs even when PRs have conflicts
+  # here we want to tidy up regardless of the state of the PR.
+  pull_request_target:
+    types:
+      - closed
+
+jobs:
+  delete_uat_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete helm deployment from namespace
+        id: delete_dev_deploy
+        uses: ministryofjustice/laa-reusable-github-actions/.github/actions/delete-helm-deployment@52ce8433a8c0cb960df8ae50714a80635d92cff7
+        with:
+          k8s_cluster: ${{ secrets.KUBE_CLUSTER }}
+          k8s_cluster_cert: ${{ secrets.KUBE_CERT }}
+          k8s_namespace: ${{ secrets.KUBE_NAMESPACE }}
+          k8s_token: ${{ secrets.KUBE_TOKEN }}
+      - name: Result
+        shell: bash
+        run: echo ${{ steps.delete_uat.outputs.delete-message }}
