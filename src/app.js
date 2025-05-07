@@ -128,9 +128,10 @@ setupDB(app).then(() => {
    * Starts the Express server on the specified port.
    * Logs the port number to the console upon successful startup.
    */
-  app.listen(config.app.port, () => {
+  app.listen(config.app.port, '0.0.0.0', () => {
     console.log(chalk.yellow(`Listening on port ${config.app.port}...`));
   });
+  
 
 }).catch(error => {
   console.error('Failed to set up the database:', error);
