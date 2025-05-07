@@ -74,6 +74,7 @@
 #     path: /health
 #     port: http
 #   initialDelaySeconds: 30
+#   periodSeconds: 60
 
 # env:
 #   SERVICE_NAME: "Manage your civil cases"
