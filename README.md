@@ -1,6 +1,6 @@
 # DEPRECATED
 
-This repo has been deprecated and should **NOT** be used for any production purposes. This repo will not receive anymore updates and has served the it's purpose.
+This repo has been deprecated and should **NOT** be used for any production purposes. This repo will not receive anymore updates and has served it's purpose.
 
 - We recommend: [laa express typescript template](https://github.com/ministryofjustice/laa-express-typescript-template) as an alternative for any future express project work.
 
